@@ -18,14 +18,10 @@ public class ProductController {
     @GetMapping("/products")
     public List<Product> getProducts() {
         List<Product> products = productService.getAllProducts();
-
         if(products.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There are no products available");
         } else {
             return products;
         }
     }
-
-
-
 }
