@@ -1,17 +1,15 @@
 package ar.unq.unqnini.service;
-import ar.unq.unqnini.dao.ProductDAO;
 import ar.unq.unqnini.model.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.unq.unqnini.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
-    @Autowired private ProductDAO productDAO;
-
+    private final ProductRepository productRepository;
     public List<Product> getAllProducts() {
-        return new ArrayList<>();
+        return productRepository.findAll();
     }
 }
