@@ -30,7 +30,7 @@ public class ProductController {
     public Product getProduct(@PathVariable String productID) {
         try {
             return productService.getProduct(productID)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Service not available"));
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The product does not exist"));
         } catch (MongoException exc) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Service not available");
         }

@@ -8,6 +8,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -32,5 +34,11 @@ class ProductServiceTest {
         List<Product> listToReturn = Collections.singletonList(productOne);
         when(productRepository.findAll()).thenReturn(listToReturn);
         assertEquals(listToReturn, productService.getAllProducts());
+    }
+
+    @Test
+    void getProduct() {
+        when(productRepository.findById("P_1")).thenReturn(Optional.ofNullable(productOne));
+        assertEquals(Optional.ofNullable(productOne), productService.getProduct("P_1"));
     }
 }
