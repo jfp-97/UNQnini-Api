@@ -24,7 +24,7 @@ class ProductServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        productOne = new Product("P_1","POne", "", 50.00);
+        productOne = new Product("P_1","POne", "", 50.00, Collections.singletonList("P1"), 100);
     }
 
     @Test
