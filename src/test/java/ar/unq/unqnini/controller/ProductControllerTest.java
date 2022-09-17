@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.web.server.ResponseStatusException;
 import java.util.Collections;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,11 +31,5 @@ class ProductControllerTest {
         List<Product> listToReturn = Collections.singletonList(productOne);
         when(productService.getAllProducts()).thenReturn(listToReturn);
         assertEquals(listToReturn, productController.getProducts());
-    }
-
-    @Test
-    void getProductsCaseNoThereAreProducts() {
-        when(productService.getAllProducts()).thenReturn(List.of());
-        assertThrowsExactly(ResponseStatusException.class, () -> productController.getProducts(), "There are no products available");
     }
 }
