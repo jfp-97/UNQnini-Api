@@ -11,7 +11,7 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public List<Product> getAllProducts() { return productRepository.findAll(); }
+    public List<Product> getAllProducts() { return productRepository.findByStockIsGreaterThan(0); }
     public Optional<Product> getProduct(String productID) { return productRepository.findById(productID); }
 
 
