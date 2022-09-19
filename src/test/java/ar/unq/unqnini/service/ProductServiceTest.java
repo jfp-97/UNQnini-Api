@@ -32,7 +32,7 @@ class ProductServiceTest {
     @Test
     void getAllProducts() {
         List<Product> listToReturn = Collections.singletonList(productOne);
-        when(productRepository.findAll()).thenReturn(listToReturn);
+        when(productRepository.findByStockIsGreaterThan(0)).thenReturn(listToReturn);
         assertEquals(listToReturn, productService.getAllProducts());
     }
 
