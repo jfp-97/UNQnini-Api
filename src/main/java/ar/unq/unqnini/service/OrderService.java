@@ -54,7 +54,7 @@ public class OrderService {
         } else {
             purchases = new ArrayList<PurchaseData>();
         }
-        purchases.add(new PurchaseData(localDateTime, order.getClass().toString(), order.getProducts()));
+        purchases.add(new PurchaseData(localDateTime, order.getClass().toString().substring(27), order.getProducts()));
         orderRepository.save(new DataOfOrder(order.getCuit(), purchases));
         decrementStock(order);
     }
