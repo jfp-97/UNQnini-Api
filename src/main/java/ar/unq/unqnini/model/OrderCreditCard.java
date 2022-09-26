@@ -1,10 +1,8 @@
 package ar.unq.unqnini.model;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import javax.validation.constraints.NotNull;
 
 @Document(value = "Orders")
@@ -14,5 +12,5 @@ import javax.validation.constraints.NotNull;
 public class OrderCreditCard extends OrderCard {
 
     @NotNull
-    private Integer amountOfPayments;
+    private String amountOfPayments;
 }

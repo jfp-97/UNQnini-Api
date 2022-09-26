@@ -29,6 +29,5 @@ public class OrderService {
                     + " pero solo hay " + product.getStock() + " disponible; "
             ).reduce("", String::concat));
         }
-
     }
 }

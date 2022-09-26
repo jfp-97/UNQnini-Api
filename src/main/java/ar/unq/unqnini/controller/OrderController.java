@@ -1,6 +1,4 @@
 package ar.unq.unqnini.controller;
-
-import ar.unq.unqnini.model.Order;
 import ar.unq.unqnini.model.OrderCard;
 import ar.unq.unqnini.model.OrderCash;
 import ar.unq.unqnini.model.OrderCreditCard;
@@ -9,9 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
 
 @RestController
 @ControllerAdvice
@@ -32,7 +28,6 @@ public class OrderController {
     }
 
     @PostMapping("/order/creditCard")
-    public void placeOrderCreditCard(@Validated @RequestBody OrderCreditCard order) {
-        orderService.processOrder(order);
+    public void placeOrderCreditCard(@Validated @RequestBody OrderCreditCard order) { orderService.processOrder(order);
     }
 }

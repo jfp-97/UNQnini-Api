@@ -1,9 +1,7 @@
 package ar.unq.unqnini.model;
-
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.lang.Nullable;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -33,8 +31,7 @@ public abstract class Order {
     private String businessAddress;
 
     @NotNull
-    @NotBlank
-    private String deliveryType;
+    private Boolean isByHomeDelivery;
 
     @Nullable
     private String deliveryAddress;
