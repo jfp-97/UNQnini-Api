@@ -20,4 +20,7 @@ public class Product {
     private Double price;
     private List<String> description;
     private Integer stock;
+    private String category;
+    private String year;
+    private String license;
 }
