@@ -27,7 +27,14 @@ class ProductControllerTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        productOne = new Product("P_1","POne", "", 50.00, Collections.singletonList("P1"), 100);
+        productOne = Product.builder()
+            .id("P_1")
+            .name("POne")
+            .pictureUrl("")
+            .price(50.00)
+            .description(Collections.singletonList("P1"))
+            .stock(100)
+            .build();
     }
 
     @Test
