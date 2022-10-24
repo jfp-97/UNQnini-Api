@@ -39,5 +39,5 @@ public abstract class Order {
     private Map<String, Integer> products;
 
     @Nullable
-    private Integer discount;
+    private int discount;
 }

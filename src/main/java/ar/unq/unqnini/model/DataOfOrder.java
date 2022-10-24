@@ -16,4 +16,5 @@ public class DataOfOrder {
     @Id
     private String id;
     private List<PurchaseData> purchaseData;
+    private int discount;
 }
