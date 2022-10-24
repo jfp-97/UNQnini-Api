@@ -5,16 +5,14 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
 
-@Document(value = "Orders")
+@Document(value = "Coupons")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataOfOrder {
+public class Coupon {
     @Id
     private String id;
-    private List<PurchaseData> purchaseData;
-    private int discount;
+    private int percentage;
 }
