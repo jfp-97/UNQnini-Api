@@ -18,16 +18,11 @@ public class OrderController {
     OrderService orderService;
 
     @PostMapping("/order/cash")
-    public void placeOrderCash(@Valid @RequestBody OrderCash order) {
-        orderService.processOrder(order);
-    }
+    public void placeOrderCash(@Valid @RequestBody OrderCash order) { orderService.processOrder(order); }
 
     @PostMapping("/order/debitCard")
-    public void placeOrderDebitCard(@Validated @RequestBody OrderCard order) {
-        orderService.processOrder(order);
-    }
+    public void placeOrderDebitCard(@Validated @RequestBody OrderCard order) {orderService.processOrder(order); }
 
     @PostMapping("/order/creditCard")
-    public void placeOrderCreditCard(@Validated @RequestBody OrderCreditCard order) { orderService.processOrder(order);
-    }
+    public void placeOrderCreditCard(@Validated @RequestBody OrderCreditCard order) { orderService.processOrder(order); }
 }

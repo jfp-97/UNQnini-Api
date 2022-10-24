@@ -37,4 +37,7 @@ public abstract class Order {
     private String deliveryAddress;
 
     private Map<String, Integer> products;
+
+    @Nullable
+    private int discount;
 }
