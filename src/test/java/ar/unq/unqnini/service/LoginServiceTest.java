@@ -1,4 +1,5 @@
 package ar.unq.unqnini.service;
+import ar.unq.unqnini.model.RecoverPasswordData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.repository.LoginRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,12 +28,14 @@ class LoginServiceTest {
 
     private JSONObject jsonResult;
     private UserData userData;
+    private RecoverPasswordData recoverPasswordData;
     private HttpStatus httpStatus;
     private List<JSONObject> errors;
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
         userData = UserData.builder().userName("TEST").password("TEST").build();
+        recoverPasswordData = RecoverPasswordData.builder().userName("TEST").build();
         jsonResult = new JSONObject();
         errors = new ArrayList<>();
     }
@@ -66,5 +69,23 @@ class LoginServiceTest {
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
         assertEquals(responseEntity, loginService.validateData(userData));
+    }
+
+    @Test
+    void recoverPassword() throws JSONException {
+        when(loginRepository.findById("TEST")).thenReturn(Optional.ofNullable(userData));
+        jsonResult = new JSONObject().put("password", userData.getPassword());
+        httpStatus = HttpStatus.OK;
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
+        assertEquals(responseEntity, loginService.recoverPassword(recoverPasswordData));
+    }
+
+    @Test
+    void recoverPasswordInvalidUser() throws JSONException {
+        when(loginRepository.findById("TEST")).thenReturn(Optional.empty());
+        jsonResult = new JSONObject().put("error", "Bad Request");
+        httpStatus = HttpStatus.BAD_REQUEST;
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
+        assertEquals(responseEntity, loginService.recoverPassword(recoverPasswordData));
     }
 }
