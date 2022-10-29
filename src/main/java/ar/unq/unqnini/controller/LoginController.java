@@ -1,4 +1,5 @@
 package ar.unq.unqnini.controller;
+import ar.unq.unqnini.model.RecoverPasswordData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.service.LoginService;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,11 @@ public class LoginController {
     @ResponseBody
     public ResponseEntity<String> validateData(@Validated @RequestBody UserData userData) throws JSONException {
         return loginService.validateData(userData);
+    }
+
+    @PostMapping("/login/recover")
+    @ResponseBody
+    public ResponseEntity<String> recoverPassword(@Validated @RequestBody RecoverPasswordData recoverPasswordData) throws JSONException {
+        return loginService.recoverPassword(recoverPasswordData);
     }
 }

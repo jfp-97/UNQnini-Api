@@ -1,4 +1,5 @@
 package ar.unq.unqnini.service;
+import ar.unq.unqnini.model.RecoverPasswordData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +38,22 @@ public class LoginService {
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);
     }
 
+    public ResponseEntity<String> recoverPassword(RecoverPasswordData recoverPasswordData) throws JSONException {
+        Optional<UserData> loginData = loginRepository.findById(recoverPasswordData.getUserName());
+        JSONObject jsonResult;
+        HttpStatus httpStatus;
+
+        if(loginData.isEmpty()) {
+            jsonResult = new JSONObject().put("error", "Bad Request");
+            httpStatus = HttpStatus.BAD_REQUEST;
+        } else {
+            jsonResult = new JSONObject().put("password", loginData.get().getPassword());
+            httpStatus = HttpStatus.OK;
+        }
+        return new ResponseEntity<>(jsonResult.toString(), httpStatus);
+    }
+
     private JSONObject createErrorBody(String field, String Message) throws JSONException {
-       return new JSONObject().put("field", field).put("defaultMessage", Message);
+        return new JSONObject().put("field", field).put("defaultMessage", Message);
     }
 }
