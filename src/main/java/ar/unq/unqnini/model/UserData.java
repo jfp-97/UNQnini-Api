@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 
 @Document(value = "Users")
 @Data
@@ -18,10 +20,26 @@ public class UserData {
     @Id
     @NotNull
     private String username;
-    private String password;
-    private String name;
-    private Number cuit;
-    private String businessName;
-    private String businessAddress;
 
+    @NotNull
+    @NotBlank
+    private String password;
+
+    @NotNull
+    @NotBlank
+    @Pattern(regexp = "^[a-zA-Z ]*$")
+    private String fullname;
+
+
+    @Pattern(regexp = "^\\d{10}$")
+    @Pattern(regexp = "^[1-9]*$")
+    private String cuit;
+
+    @NotNull
+    @NotBlank
+    private String businessName;
+
+    @NotNull
+    @NotBlank
+    private String businessAddress;
 }

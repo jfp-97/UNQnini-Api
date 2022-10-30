@@ -1,7 +1,7 @@
 package ar.unq.unqnini.controller;
 import ar.unq.unqnini.model.RecoverPasswordData;
 import ar.unq.unqnini.model.LoginData;
-import ar.unq.unqnini.service.LoginService;
+import ar.unq.unqnini.service.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,10 +19,10 @@ import static org.mockito.Mockito.when;
 
 class LoginControllerTest {
     @Mock
-    private LoginService loginService;
+    private UserService loginService;
 
     @InjectMocks
-    private LoginController loginController;
+    private UserController userController;
 
     private RecoverPasswordData recoverPasswordData;
     private JSONObject jsonResult;
@@ -45,7 +45,7 @@ class LoginControllerTest {
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
         when(loginService.validateData(loginData)).thenReturn(responseEntity);
-        assertEquals(responseEntity, loginController.validateData(loginData));
+        assertEquals(responseEntity, userController.validateData(loginData));
     }
 
     @Test
@@ -56,7 +56,7 @@ class LoginControllerTest {
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
         when(loginService.validateData(loginData)).thenReturn(responseEntity);
-        assertEquals(responseEntity, loginController.validateData(loginData));
+        assertEquals(responseEntity, userController.validateData(loginData));
     }
 
     @Test
@@ -65,6 +65,6 @@ class LoginControllerTest {
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
         when(loginService.recoverPassword(recoverPasswordData)).thenReturn(responseEntity);
-        assertEquals(responseEntity, loginController.recoverPassword(recoverPasswordData));
+        assertEquals(responseEntity, userController.recoverPassword(recoverPasswordData));
     }
 }

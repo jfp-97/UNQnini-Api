@@ -1,30 +1,45 @@
 package ar.unq.unqnini.controller;
-
+import ar.unq.unqnini.model.LoginData;
+import ar.unq.unqnini.model.RecoverPasswordData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.service.UserService;
-import com.mongodb.MongoException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @ControllerAdvice
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    @Autowired
+    UserService userService;
+
+    @PostMapping("/login/validate")
+    @ResponseBody
+    public ResponseEntity<String> validateData(@Validated @RequestBody LoginData loginData) throws JSONException {
+        return userService.validateData(loginData);
+    }
+
+    @PostMapping("/login/recover")
+    @ResponseBody
+    public ResponseEntity<String> recoverPassword(@Validated @RequestBody RecoverPasswordData recoverPasswordData) throws JSONException {
+        return userService.recoverPassword(recoverPasswordData);
+    }
 
     @GetMapping("/user/{username}")
-    public UserData getUser(@PathVariable String username){
-        try {
-            return userService.getUser(username)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The product does not exist"));
-        } catch (MongoException exc){
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Service not available");
-        }
+    public ResponseEntity<String> getUser(@PathVariable String username) throws JSONException {
+        return userService.getUser(username);
     }
+
+    @PostMapping("/user/modifiedInformation")
+    @ResponseBody
+    public ResponseEntity<String> modifiedInformation(@Validated @RequestBody UserData userData) throws JSONException {
+        return userService.modifiedInformation(userData);
+    }
+
+
 }

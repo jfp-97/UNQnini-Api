@@ -18,13 +18,13 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-class LoginServiceTest {
+class UserServiceTest {
 
     @Mock
     private LoginRepository loginRepository;
 
     @InjectMocks
-    private LoginService loginService;
+    private UserService loginService;
 
     private JSONObject jsonResult;
     private LoginData loginData;
