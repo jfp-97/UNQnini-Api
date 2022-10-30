@@ -1,5 +1,4 @@
 package ar.unq.unqnini.model;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,37 +8,19 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
-@Document(value = "Users")
+@Document(value = "UserDatas")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserData {
+public class LoginData {
     @Id
     @NotNull
-    private String username;
+    @NotBlank
+    private String userName;
 
     @NotNull
     @NotBlank
     private String password;
-
-    @NotNull
-    @NotBlank
-    @Pattern(regexp = "^[a-zA-Z ]*$")
-    private String fullname;
-
-
-    @Pattern(regexp = "^\\d{10}$")
-    @Pattern(regexp = "^[1-9]*$")
-    private String cuit;
-
-    @NotNull
-    @NotBlank
-    private String businessName;
-
-    @NotNull
-    @NotBlank
-    private String businessAddress;
 }
