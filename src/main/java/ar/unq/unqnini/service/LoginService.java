@@ -1,6 +1,6 @@
 package ar.unq.unqnini.service;
 import ar.unq.unqnini.model.RecoverPasswordData;
-import ar.unq.unqnini.model.UserData;
+import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.repository.LoginRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ public class LoginService {
     @Autowired
     LoginRepository loginRepository;
 
-    public ResponseEntity<String> validateData(UserData userData) throws JSONException {
-        Optional<UserData> loginData = loginRepository.findById(userData.getUserName());
+    public ResponseEntity<String> validateData(LoginData userData) throws JSONException {
+        Optional<LoginData> loginData = loginRepository.findById(userData.getUserName());
         JSONObject jsonResult = new JSONObject().put("error", "Bad Request");
         HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
         List<JSONObject> errors = new ArrayList<>();
@@ -39,7 +39,7 @@ public class LoginService {
     }
 
     public ResponseEntity<String> recoverPassword(RecoverPasswordData recoverPasswordData) throws JSONException {
-        Optional<UserData> loginData = loginRepository.findById(recoverPasswordData.getUserName());
+        Optional<LoginData> loginData = loginRepository.findById(recoverPasswordData.getUserName());
         JSONObject jsonResult;
         HttpStatus httpStatus;
 

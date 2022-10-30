@@ -1,6 +1,6 @@
 package ar.unq.unqnini.controller;
 import ar.unq.unqnini.model.RecoverPasswordData;
-import ar.unq.unqnini.model.UserData;
+import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.service.LoginService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,14 +26,14 @@ class LoginControllerTest {
 
     private RecoverPasswordData recoverPasswordData;
     private JSONObject jsonResult;
-    private UserData userData;
+    private LoginData loginData;
     private HttpStatus httpStatus;
     private List<JSONObject> errors;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
-        userData = UserData.builder().userName("TEST").password("TEST").build();
+        loginData = LoginData.builder().userName("TEST").password("TEST").build();
         recoverPasswordData = RecoverPasswordData.builder().userName("TEST").build();
         jsonResult = new JSONObject();
         errors = new ArrayList<>();
@@ -44,8 +44,8 @@ class LoginControllerTest {
         jsonResult = new JSONObject().put("areTheUserDetailsCorrect", true);
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        when(loginService.validateData(userData)).thenReturn(responseEntity);
-        assertEquals(responseEntity, loginController.validateData(userData));
+        when(loginService.validateData(loginData)).thenReturn(responseEntity);
+        assertEquals(responseEntity, loginController.validateData(loginData));
     }
 
     @Test
@@ -55,13 +55,13 @@ class LoginControllerTest {
         jsonResult.put("errors", new JSONArray(errors));
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        when(loginService.validateData(userData)).thenReturn(responseEntity);
-        assertEquals(responseEntity, loginController.validateData(userData));
+        when(loginService.validateData(loginData)).thenReturn(responseEntity);
+        assertEquals(responseEntity, loginController.validateData(loginData));
     }
 
     @Test
     void recoverPassword() throws JSONException {
-        jsonResult = new JSONObject().put("password", userData.getPassword());
+        jsonResult = new JSONObject().put("password", loginData.getPassword());
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
         when(loginService.recoverPassword(recoverPasswordData)).thenReturn(responseEntity);

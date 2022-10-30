@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserData {
+public class LoginData {
     @Id
     @NotNull
     @NotBlank

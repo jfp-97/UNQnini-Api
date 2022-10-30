@@ -1,6 +1,6 @@
 package ar.unq.unqnini.controller;
 import ar.unq.unqnini.model.RecoverPasswordData;
-import ar.unq.unqnini.model.UserData;
+import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.service.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +19,8 @@ public class LoginController {
 
     @PostMapping("/login/validate")
     @ResponseBody
-    public ResponseEntity<String> validateData(@Validated @RequestBody UserData userData) throws JSONException {
-        return loginService.validateData(userData);
+    public ResponseEntity<String> validateData(@Validated @RequestBody LoginData loginData) throws JSONException {
+        return loginService.validateData(loginData);
     }
 
     @PostMapping("/login/recover")
