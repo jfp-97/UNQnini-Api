@@ -24,11 +24,13 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+    JSONObject jsonResult;
+    HttpStatus httpStatus;
 
     public ResponseEntity<String> validateData(LoginData userData) throws JSONException {
         Optional<LoginData> loginData = loginRepository.findById(userData.getUserName());
-        JSONObject jsonResult = new JSONObject().put("error", "Bad Request");
-        HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+        jsonResult = new JSONObject().put("error", "Bad Request");
+        httpStatus = HttpStatus.BAD_REQUEST;
         List<JSONObject> errors = new ArrayList<>();
 
         if(loginData.isEmpty()) {
@@ -46,8 +48,6 @@ public class UserService {
 
     public ResponseEntity<String> recoverPassword(RecoverPasswordData recoverPasswordData) throws JSONException {
         Optional<LoginData> loginData = loginRepository.findById(recoverPasswordData.getUserName());
-        JSONObject jsonResult;
-        HttpStatus httpStatus;
 
         if(loginData.isEmpty()) {
             jsonResult = new JSONObject().put("error", "Bad Request");
@@ -61,8 +61,6 @@ public class UserService {
 
     public ResponseEntity<String> getUser(String userName) throws JSONException {
         Optional<UserData> userData = userRepository.findById(userName);
-        JSONObject jsonResult;
-        HttpStatus httpStatus;
 
         if(userData.isEmpty()) {
             jsonResult = new JSONObject().put("error", "Bad Request");
@@ -80,7 +78,7 @@ public class UserService {
     }
 
     public ResponseEntity<String> modifiedInformation(UserData userData) {
-        HttpStatus httpStatus = HttpStatus.OK;
+        httpStatus = HttpStatus.OK;
         userRepository.save(userData);
         return new ResponseEntity<>(new JSONObject().toString(), httpStatus);
     }

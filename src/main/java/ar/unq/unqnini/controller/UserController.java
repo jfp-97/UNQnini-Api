@@ -20,26 +20,16 @@ public class UserController {
 
     @PostMapping("/login/validate")
     @ResponseBody
-    public ResponseEntity<String> validateData(@Validated @RequestBody LoginData loginData) throws JSONException {
-        return userService.validateData(loginData);
-    }
+    public ResponseEntity<String> validateData(@Validated @RequestBody LoginData loginData) throws JSONException { return userService.validateData(loginData); }
 
     @PostMapping("/login/recover")
     @ResponseBody
-    public ResponseEntity<String> recoverPassword(@Validated @RequestBody RecoverPasswordData recoverPasswordData) throws JSONException {
-        return userService.recoverPassword(recoverPasswordData);
-    }
+    public ResponseEntity<String> recoverPassword(@Validated @RequestBody RecoverPasswordData recoverPasswordData) throws JSONException { return userService.recoverPassword(recoverPasswordData); }
 
     @GetMapping("/user/{username}")
-    public ResponseEntity<String> getUser(@PathVariable String username) throws JSONException {
-        return userService.getUser(username);
-    }
+    public ResponseEntity<String> getUser(@PathVariable String username) throws JSONException { return userService.getUser(username); }
 
     @PostMapping("/user/modifiedInformation")
     @ResponseBody
-    public ResponseEntity<String> modifiedInformation(@Validated @RequestBody UserData userData) throws JSONException {
-        return userService.modifiedInformation(userData);
-    }
-
-
+    public ResponseEntity<String> modifiedInformation(@Validated @RequestBody UserData userData) throws JSONException { return userService.modifiedInformation(userData); }
 }
