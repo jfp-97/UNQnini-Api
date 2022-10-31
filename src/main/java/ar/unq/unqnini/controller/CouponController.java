@@ -16,7 +16,5 @@ public class CouponController {
 
     @PostMapping("/coupon/validate")
         @ResponseBody
-        public int applyCoupon(@Validated @RequestBody CodeCoupon couponCode) {
-            return couponService.applyCoupon(couponCode);
-        }
+        public int applyCoupon(@Validated @RequestBody CodeCoupon couponCode) { return couponService.applyCoupon(couponCode); }
 }

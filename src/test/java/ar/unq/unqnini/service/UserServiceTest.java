@@ -1,7 +1,9 @@
 package ar.unq.unqnini.service;
 import ar.unq.unqnini.model.RecoverPasswordData;
 import ar.unq.unqnini.model.LoginData;
+import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.repository.LoginRepository;
+import ar.unq.unqnini.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -23,17 +25,23 @@ class UserServiceTest {
     @Mock
     private LoginRepository loginRepository;
 
+    @Mock
+    private UserRepository userRepository;
+
     @InjectMocks
     private UserService loginService;
 
+    private UserData userData;
     private JSONObject jsonResult;
     private LoginData loginData;
     private RecoverPasswordData recoverPasswordData;
     private HttpStatus httpStatus;
     private List<JSONObject> errors;
+
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        userData = UserData.builder().username("TEST").fullname("SRTESTER").password("TESTER").cuit("1234").businessName("REST").businessAddress("API").build();
         loginData = LoginData.builder().userName("TEST").password("TEST").build();
         recoverPasswordData = RecoverPasswordData.builder().userName("TEST").build();
         jsonResult = new JSONObject();
@@ -87,5 +95,36 @@ class UserServiceTest {
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
         assertEquals(responseEntity, loginService.recoverPassword(recoverPasswordData));
+    }
+
+    @Test
+    void getUser() throws JSONException {
+        when(userRepository.findById("TEST")).thenReturn(Optional.ofNullable(userData));
+        jsonResult = new JSONObject().put("username", userData.getUsername());
+        jsonResult.put("password", userData.getPassword());
+        jsonResult.put("fullname", userData.getFullname());
+        jsonResult.put("cuit", userData.getCuit().toString());
+        jsonResult.put("businessName", userData.getBusinessName());
+        jsonResult.put("businessAddress", userData.getBusinessAddress());
+        httpStatus = HttpStatus.OK;
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
+        assertEquals(responseEntity, loginService.getUser("TEST"));
+    }
+
+    @Test
+    void getUserNonExistentUser() throws JSONException {
+        when(userRepository.findById("TEST")).thenReturn(Optional.empty());
+        jsonResult = new JSONObject().put("error", "Bad Request");
+        httpStatus = HttpStatus.BAD_REQUEST;
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
+        assertEquals(responseEntity, loginService.getUser("TEST"));
+    }
+
+    @Test
+    void modifiedInformation() {
+        when(userRepository.save(userData)).thenReturn(userData);
+        httpStatus = HttpStatus.OK;
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(new JSONObject().toString(), httpStatus);
+        assertEquals(responseEntity, loginService.modifiedInformation(userData));
     }
 }
