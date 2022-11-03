@@ -28,7 +28,7 @@ public class UserController {
 
     @PostMapping("/user/register")
     @ResponseBody
-    public ResponseEntity<String> addUser(UserData user) throws JSONException { return userService.addUser(user); }
+    public ResponseEntity<String> addUser(@Validated @RequestBody UserData user) throws JSONException { return userService.addUser(user); }
 
     @GetMapping("/user/{username}")
     public ResponseEntity<String> getUser(@PathVariable String username) throws JSONException { return userService.getUser(username); }

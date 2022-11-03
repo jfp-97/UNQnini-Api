@@ -24,6 +24,7 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
     JSONObject jsonResult;
     HttpStatus httpStatus;
 
@@ -62,12 +63,15 @@ public class UserService {
     public ResponseEntity<String> addUser(UserData userData) throws JSONException{
         List<JSONObject> errors = new ArrayList<>();
 
-        System.out.println(userData);
+
         if(userRepository.findById(userData.getUsername()).isPresent()) {
             jsonResult = new JSONObject().put("error", "Bad Request");
             errors.add(createErrorBody("username", "ya existe en el sistema"));
             jsonResult.put("errors", new JSONArray(errors));
+            httpStatus = HttpStatus.BAD_REQUEST;
         } else {
+            jsonResult = new JSONObject().put("userRegitered", "true");
+            httpStatus = HttpStatus.OK;
             userRepository.save(userData);
         }
 
