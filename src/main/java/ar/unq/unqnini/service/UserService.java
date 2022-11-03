@@ -59,6 +59,21 @@ public class UserService {
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);
     }
 
+    public ResponseEntity<String> addUser(UserData userData) throws JSONException{
+        List<JSONObject> errors = new ArrayList<>();
+
+        System.out.println(userData);
+        if(userRepository.findById(userData.getUsername()).isPresent()) {
+            jsonResult = new JSONObject().put("error", "Bad Request");
+            errors.add(createErrorBody("username", "ya existe en el sistema"));
+            jsonResult.put("errors", new JSONArray(errors));
+        } else {
+            userRepository.save(userData);
+        }
+
+        return new ResponseEntity<>(jsonResult.toString(), httpStatus);
+    }
+
     public ResponseEntity<String> getUser(String userName) throws JSONException {
         Optional<UserData> userData = userRepository.findById(userName);
 

@@ -26,6 +26,10 @@ public class UserController {
     @ResponseBody
     public ResponseEntity<String> recoverPassword(@Validated @RequestBody RecoverPasswordData recoverPasswordData) throws JSONException { return userService.recoverPassword(recoverPasswordData); }
 
+    @PostMapping("/user/register")
+    @ResponseBody
+    public ResponseEntity<String> addUser(UserData user) throws JSONException { return userService.addUser(user); }
+
     @GetMapping("/user/{username}")
     public ResponseEntity<String> getUser(@PathVariable String username) throws JSONException { return userService.getUser(username); }
 
