@@ -62,6 +62,7 @@ public class UserService {
 
     public ResponseEntity<String> addUser(UserData userData) throws JSONException{
         List<JSONObject> errors = new ArrayList<>();
+        LoginData loginData = new LoginData(userData.getUsername(), userData.getPassword());
 
 
         if(userRepository.findById(userData.getUsername()).isPresent()) {
@@ -70,7 +71,8 @@ public class UserService {
             jsonResult.put("errors", new JSONArray(errors));
             httpStatus = HttpStatus.BAD_REQUEST;
         } else {
-            jsonResult = new JSONObject().put("userRegitered", "true");
+            loginRepository.save(loginData);
+            jsonResult = new JSONObject().put("userRegistered", "true");
             httpStatus = HttpStatus.OK;
             userRepository.save(userData);
         }
@@ -91,6 +93,7 @@ public class UserService {
             jsonResult.put("cuit", userData.get().getCuit().toString());
             jsonResult.put("businessName", userData.get().getBusinessName());
             jsonResult.put("businessAddress", userData.get().getBusinessAddress());
+            jsonResult.put("pictureUrl", userData.get().getPictureUrl());
             httpStatus = HttpStatus.OK;
         }
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);

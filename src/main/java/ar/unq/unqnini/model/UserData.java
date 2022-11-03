@@ -42,4 +42,6 @@ public class UserData {
     @NotNull
     @NotBlank
     private String businessAddress;
+
+    private String pictureUrl;
 }
