@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 public class UserData {
     @Id
     @NotNull
+    @NotBlank
     private String username;
 
     @NotNull
