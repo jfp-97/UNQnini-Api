@@ -5,16 +5,16 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import java.util.List;
-
-@Document(value = "Orders")
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+@Document(value = "UserDatas")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DataOfOrder {
+public class Username {
     @Id
-    private String id;
-    private List<PurchaseData> purchaseData;
-    private int discount;
+    @NotNull
+    @NotBlank
+    private String username;
 }

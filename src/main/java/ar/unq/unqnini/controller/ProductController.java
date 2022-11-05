@@ -18,21 +18,10 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products")
-    public List<Product> getProducts() {
-        try {
-            return productService.getAllProducts();
-        } catch (MongoException exc) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Service not available");
-        }
-    }
+    public List<Product> getProducts() { return productService.getAllProducts(); }
 
     @GetMapping("/products/{productID}")
     public Product getProduct(@PathVariable String productID) {
-        try {
-            return productService.getProduct(productID)
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The product does not exist"));
-        } catch (MongoException exc) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Service not available");
-        }
+            return productService.getProduct(productID).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The product does not exist"));
     }
 }

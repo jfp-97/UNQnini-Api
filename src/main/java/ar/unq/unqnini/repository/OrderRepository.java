@@ -1,5 +1,5 @@
 package ar.unq.unqnini.repository;
-import ar.unq.unqnini.model.DataOfOrder;
+import ar.unq.unqnini.model.order.purchase.DataOfOrder;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,5 +1,5 @@
 package ar.unq.unqnini.controller;
-import ar.unq.unqnini.model.RecoverPasswordData;
+import ar.unq.unqnini.model.Username;
 import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.service.UserService;
@@ -25,7 +25,7 @@ class UserControllerTest {
     @InjectMocks
     private UserController userController;
 
-    private RecoverPasswordData recoverPasswordData;
+    private Username recoverPasswordData;
     private JSONObject jsonResult;
     private LoginData loginData;
     private HttpStatus httpStatus;
@@ -37,7 +37,7 @@ class UserControllerTest {
         MockitoAnnotations.openMocks(this);
         loginData = LoginData.builder().userName("TEST").password("TEST").build();
         userData = UserData.builder().username("TEST").fullname("SRTESTER").password("TESTER").cuit("1234").businessName("REST").businessAddress("API").build();
-        recoverPasswordData = RecoverPasswordData.builder().userName("TEST").build();
+        recoverPasswordData = Username.builder().userName("TEST").build();
         jsonResult = new JSONObject();
         errors = new ArrayList<>();
     }
