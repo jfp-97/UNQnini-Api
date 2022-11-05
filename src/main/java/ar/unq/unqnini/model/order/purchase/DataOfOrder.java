@@ -1,21 +1,20 @@
-package ar.unq.unqnini.model;
+package ar.unq.unqnini.model.order.purchase;
+import ar.unq.unqnini.model.order.purchase.PurchaseData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.List;
 
-@Document(value = "UserDatas")
+@Document(value = "Orders")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecoverPasswordData {
+public class DataOfOrder {
     @Id
-    @NotNull
-    @NotBlank
-    private String userName;
+    private String id;
+    private List<PurchaseData> purchaseData;
 }

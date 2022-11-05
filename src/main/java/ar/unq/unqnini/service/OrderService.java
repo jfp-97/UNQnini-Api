@@ -1,8 +1,11 @@
 package ar.unq.unqnini.service;
-import ar.unq.unqnini.model.DataOfOrder;
-import ar.unq.unqnini.model.Order;
+import ar.unq.unqnini.model.Username;
+import ar.unq.unqnini.model.order.purchase.DataOfOrder;
+import ar.unq.unqnini.model.order.Order;
 import ar.unq.unqnini.model.Product;
-import ar.unq.unqnini.model.PurchaseData;
+import ar.unq.unqnini.model.order.purchase.PurchaseData;
+import ar.unq.unqnini.model.order.purchase.PurchaseId;
+import ar.unq.unqnini.model.order.purchase.PurchaseProductBasicData;
 import ar.unq.unqnini.repository.OrderRepository;
 import ar.unq.unqnini.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +27,7 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
 
-    public void processOrder(Order order) {
+    public void processOrder(Order order, ProductService productService) {
         List<Product> products = productRepository.findByIdIn(List.copyOf(order.getProducts().keySet()));
 
         List<Product> productsWithoutEnoughStock = products.stream().filter(product ->
@@ -36,13 +39,25 @@ public class OrderService {
                                 + " pero solo hay " + product.getStock() + " disponible; "
                 ).reduce("", String::concat));
         } else {
-            saveOrUpdateOrder(order);
+            saveOrUpdateOrder(order, productService);
         }
     }
 
-    private void saveOrUpdateOrder(Order order) {
-        Optional<DataOfOrder> dataOfOrder = orderRepository.findById(order.getCuit());
+    public List<PurchaseData> getPurchases(Username username) {
+        Optional<DataOfOrder> dataOfOrder = orderRepository.findById(username.getUsername());
+
+        if(dataOfOrder.isPresent()) {
+            return dataOfOrder.get().getPurchaseData();
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
+    private void saveOrUpdateOrder(Order order, ProductService productService) {
+        String id = (order.getUsername().isBlank()) ? order.getCuit() : order.getUsername();
+        Optional<DataOfOrder> dataOfOrder = orderRepository.findById(id);
         List<PurchaseData> purchases;
+
         String localDateTime = DateTimeFormatter.ofPattern("yyyy/MM/dd-HH:mm:ss").format(LocalDateTime.now());
 
         if (dataOfOrder.isPresent()) {
@@ -50,8 +65,11 @@ public class OrderService {
         } else {
             purchases = new ArrayList<>();
         }
-        purchases.add(new PurchaseData(localDateTime, order.getClass().toString().substring(27), order.getProducts()));
-        orderRepository.save(new DataOfOrder(order.getCuit(), purchases, order.getDiscount()));
+
+        List<PurchaseProductBasicData> purchaseProductBasicData = new ArrayList<>();
+        order.getProducts().forEach((productID, count) ->  purchaseProductBasicData.add(productService.getBasicDataOfProduct(productID, count)));
+        purchases.add(new PurchaseData(localDateTime, order.getClass().toString().substring(27), purchaseProductBasicData, order.getDiscount(), order.getTotal()));
+        orderRepository.save(new DataOfOrder(id , purchases));
         decrementStock(order);
     }
 

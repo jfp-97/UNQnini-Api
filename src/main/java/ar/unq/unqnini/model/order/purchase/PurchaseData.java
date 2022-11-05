@@ -1,10 +1,7 @@
-package ar.unq.unqnini.model;
-
+package ar.unq.unqnini.model.order.purchase;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-
-import java.util.Calendar;
-import java.util.Map;
+import java.util.List;
 
 @Data
 @Builder
@@ -14,5 +11,7 @@ public class PurchaseData {
     @Id
     private String id;
     private String paymentType;
-    private Map<String, Integer> products;
+    private List<PurchaseProductBasicData> purchasesProducts;
+    private int discount;
+    private Float total;
 }

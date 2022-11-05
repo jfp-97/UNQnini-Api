@@ -1,6 +1,5 @@
 package ar.unq.unqnini.service;
-import ar.unq.unqnini.model.DataOfOrder;
-import ar.unq.unqnini.model.RecoverPasswordData;
+import ar.unq.unqnini.model.Username;
 import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.repository.LoginRepository;
@@ -47,8 +46,8 @@ public class UserService {
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);
     }
 
-    public ResponseEntity<String> recoverPassword(RecoverPasswordData recoverPasswordData) throws JSONException {
-        Optional<LoginData> loginData = loginRepository.findById(recoverPasswordData.getUserName());
+    public ResponseEntity<String> recoverPassword(Username recoverPasswordData) throws JSONException {
+        Optional<LoginData> loginData = loginRepository.findById(recoverPasswordData.getUsername());
 
         if(loginData.isEmpty()) {
             jsonResult = new JSONObject().put("error", "Bad Request");

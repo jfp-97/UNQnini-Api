@@ -1,5 +1,5 @@
 package ar.unq.unqnini.service;
-import ar.unq.unqnini.model.RecoverPasswordData;
+import ar.unq.unqnini.model.Username;
 import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.repository.LoginRepository;
@@ -34,7 +34,7 @@ class UserServiceTest {
     private UserData userData;
     private JSONObject jsonResult;
     private LoginData loginData;
-    private RecoverPasswordData recoverPasswordData;
+    private Username recoverPasswordData;
     private HttpStatus httpStatus;
     private List<JSONObject> errors;
 
@@ -43,7 +43,7 @@ class UserServiceTest {
         MockitoAnnotations.openMocks(this);
         userData = UserData.builder().username("TEST").fullname("SRTESTER").password("TESTER").cuit("1234").businessName("REST").businessAddress("API").build();
         loginData = LoginData.builder().userName("TEST").password("TEST").build();
-        recoverPasswordData = RecoverPasswordData.builder().userName("TEST").build();
+        recoverPasswordData = Username.builder().userName("TEST").build();
         jsonResult = new JSONObject();
         errors = new ArrayList<>();
     }
