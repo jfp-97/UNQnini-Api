@@ -37,7 +37,7 @@ class UserControllerTest {
         MockitoAnnotations.openMocks(this);
         loginData = LoginData.builder().userName("TEST").password("TEST").build();
         userData = UserData.builder().username("TEST").fullname("SRTESTER").password("TESTER").cuit("1234").businessName("REST").businessAddress("API").build();
-        recoverPasswordData = Username.builder().userName("TEST").build();
+        recoverPasswordData = Username.builder().username("TEST").build();
         jsonResult = new JSONObject();
         errors = new ArrayList<>();
     }

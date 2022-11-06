@@ -25,7 +25,8 @@ public abstract class Order {
 
     @NotNull
     @NotBlank
-    @Pattern(regexp = "^\\d{10}$")
+    @Pattern(regexp = "^\\d{11}$")
+    @Pattern(regexp = "^[0-9]*$")
     private String cuit;
 
     @NotNull
