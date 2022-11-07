@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 class UserServiceTest {
 
@@ -29,7 +29,7 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @InjectMocks
-    private UserService loginService;
+    private UserService userService;
 
     private UserData userData;
     private JSONObject jsonResult;
@@ -43,7 +43,7 @@ class UserServiceTest {
         MockitoAnnotations.openMocks(this);
         userData = UserData.builder().username("TEST").fullname("SRTESTER").password("TESTER").cuit("1234").businessName("REST").businessAddress("API").build();
         loginData = LoginData.builder().userName("TEST").password("TEST").build();
-        recoverPasswordData = Username.builder().userName("TEST").build();
+        recoverPasswordData = Username.builder().username("TEST").build();
         jsonResult = new JSONObject();
         errors = new ArrayList<>();
     }
@@ -54,7 +54,7 @@ class UserServiceTest {
         jsonResult = new JSONObject().put("areTheUserDetailsCorrect", true);
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.validateData(loginData));
+        assertEquals(responseEntity, userService.validateData(loginData));
     }
 
     @Test
@@ -65,7 +65,7 @@ class UserServiceTest {
         jsonResult.put("errors", new JSONArray(errors));
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.validateData(loginData));
+        assertEquals(responseEntity, userService.validateData(loginData));
     }
 
     @Test
@@ -76,7 +76,7 @@ class UserServiceTest {
         jsonResult.put("errors", new JSONArray(errors));
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.validateData(loginData));
+        assertEquals(responseEntity, userService.validateData(loginData));
     }
 
     @Test
@@ -85,7 +85,7 @@ class UserServiceTest {
         jsonResult = new JSONObject().put("password", loginData.getPassword());
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.recoverPassword(recoverPasswordData));
+        assertEquals(responseEntity, userService.recoverPassword(recoverPasswordData));
     }
 
     @Test
@@ -94,7 +94,7 @@ class UserServiceTest {
         jsonResult = new JSONObject().put("error", "Bad Request");
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.recoverPassword(recoverPasswordData));
+        assertEquals(responseEntity, userService.recoverPassword(recoverPasswordData));
     }
 
     @Test
@@ -103,12 +103,12 @@ class UserServiceTest {
         jsonResult = new JSONObject().put("username", userData.getUsername());
         jsonResult.put("password", userData.getPassword());
         jsonResult.put("fullname", userData.getFullname());
-        jsonResult.put("cuit", userData.getCuit().toString());
+        jsonResult.put("cuit", userData.getCuit());
         jsonResult.put("businessName", userData.getBusinessName());
         jsonResult.put("businessAddress", userData.getBusinessAddress());
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.getUser("TEST"));
+        assertEquals(responseEntity, userService.getUser("TEST"));
     }
 
     @Test
@@ -117,7 +117,7 @@ class UserServiceTest {
         jsonResult = new JSONObject().put("error", "Bad Request");
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        assertEquals(responseEntity, loginService.getUser("TEST"));
+        assertEquals(responseEntity, userService.getUser("TEST"));
     }
 
     @Test
@@ -125,6 +125,29 @@ class UserServiceTest {
         when(userRepository.save(userData)).thenReturn(userData);
         httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(new JSONObject().toString(), httpStatus);
-        assertEquals(responseEntity, loginService.modifiedInformation(userData));
+        assertEquals(responseEntity, userService.modifiedInformation(userData));
+    }
+
+    @Test
+    void addUser() throws JSONException {
+        when(userRepository.findById(userData.getUsername())).thenReturn(Optional.empty());
+        LoginData loginData = new LoginData(userData.getUsername(), userData.getPassword());
+        jsonResult = new JSONObject().put("userRegistered", "true");
+        httpStatus = HttpStatus.OK;
+        assertEquals(userService.addUser(userData), new ResponseEntity<>(jsonResult.toString(), httpStatus));
+        verify(userRepository, times(1)).save(userData);
+        verify(loginRepository, times(1)).save(loginData);
+    }
+
+    @Test
+    void addUserWithExistingUser() throws JSONException {
+        when(userRepository.findById(userData.getUsername())).thenReturn(Optional.of(userData));
+        jsonResult = new JSONObject().put("error", "Bad Request");
+        errors.add(new JSONObject().put("field", "username").put("defaultMessage", "ya existe en el sistema"));
+        jsonResult.put("errors", new JSONArray(errors));
+        httpStatus = HttpStatus.BAD_REQUEST;
+        assertEquals(userService.addUser(userData), new ResponseEntity<>(jsonResult.toString(), httpStatus));
+        verify(userRepository, times(0)).save(userData);
+        verify(loginRepository, times(0)).save(loginData);
     }
 }

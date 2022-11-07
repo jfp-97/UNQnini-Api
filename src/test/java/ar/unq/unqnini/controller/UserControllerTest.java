@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 
 class UserControllerTest {
     @Mock
-    private UserService loginService;
+    private UserService userService;
 
     @InjectMocks
     private UserController userController;
@@ -28,7 +28,7 @@ class UserControllerTest {
     private Username recoverPasswordData;
     private JSONObject jsonResult;
     private LoginData loginData;
-    private HttpStatus httpStatus;
+    private HttpStatus httpStatus = HttpStatus.OK;
     private List<JSONObject> errors;
     private UserData userData;
 
@@ -45,9 +45,8 @@ class UserControllerTest {
     @Test
     void validateData() throws JSONException {
         jsonResult = new JSONObject().put("areTheUserDetailsCorrect", true);
-        httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        when(loginService.validateData(loginData)).thenReturn(responseEntity);
+        when(userService.validateData(loginData)).thenReturn(responseEntity);
         assertEquals(responseEntity, userController.validateData(loginData));
     }
 
@@ -58,16 +57,15 @@ class UserControllerTest {
         jsonResult.put("errors", new JSONArray(errors));
         httpStatus = HttpStatus.BAD_REQUEST;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        when(loginService.validateData(loginData)).thenReturn(responseEntity);
+        when(userService.validateData(loginData)).thenReturn(responseEntity);
         assertEquals(responseEntity, userController.validateData(loginData));
     }
 
     @Test
     void recoverPassword() throws JSONException {
         jsonResult = new JSONObject().put("password", loginData.getPassword());
-        httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        when(loginService.recoverPassword(recoverPasswordData)).thenReturn(responseEntity);
+        when(userService.recoverPassword(recoverPasswordData)).thenReturn(responseEntity);
         assertEquals(responseEntity, userController.recoverPassword(recoverPasswordData));
     }
 
@@ -76,20 +74,26 @@ class UserControllerTest {
         jsonResult = new JSONObject().put("username", userData.getUsername());
         jsonResult.put("password", userData.getPassword());
         jsonResult.put("fullname", userData.getFullname());
-        jsonResult.put("cuit", userData.getCuit().toString());
+        jsonResult.put("cuit", userData.getCuit());
         jsonResult.put("businessName", userData.getBusinessName());
         jsonResult.put("businessAddress", userData.getBusinessAddress());
-        httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
-        when(loginService.getUser("TEST")).thenReturn(responseEntity);
+        when(userService.getUser("TEST")).thenReturn(responseEntity);
         assertEquals(responseEntity, userController.getUser("TEST"));
     }
 
     @Test
     void modifiedInformation() throws JSONException {
-        httpStatus = HttpStatus.OK;
         ResponseEntity<String> responseEntity = new ResponseEntity<>(new JSONObject().toString(), httpStatus);
-        when(loginService.modifiedInformation(userData)).thenReturn(responseEntity);
+        when(userService.modifiedInformation(userData)).thenReturn(responseEntity);
         assertEquals(responseEntity, userController.modifiedInformation(userData));
+    }
+
+    @Test
+    void addUser() throws JSONException {
+        jsonResult = new JSONObject().put("userRegistered", "true");
+        ResponseEntity<String> responseEntity = new ResponseEntity<>(jsonResult.toString(), httpStatus);
+        when(userService.addUser(userData)).thenReturn(responseEntity);
+        assertEquals(responseEntity, userController.addUser(userData));
     }
 }
