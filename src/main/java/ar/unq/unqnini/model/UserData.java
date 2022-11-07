@@ -19,6 +19,7 @@ import javax.validation.constraints.Pattern;
 public class UserData {
     @Id
     @NotNull
+    @NotBlank
     private String username;
 
     @NotNull
@@ -31,8 +32,8 @@ public class UserData {
     private String fullname;
 
 
-    @Pattern(regexp = "^\\d{10}$")
-    @Pattern(regexp = "^[1-9]*$")
+    @Pattern(regexp = "^\\d{11}$")
+    @Pattern(regexp = "^[0-9]*$")
     private String cuit;
 
     @NotNull
@@ -42,4 +43,6 @@ public class UserData {
     @NotNull
     @NotBlank
     private String businessAddress;
+
+    private String pictureUrl;
 }

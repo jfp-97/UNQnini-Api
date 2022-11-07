@@ -8,14 +8,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-@Document(value = "UserDatas")
+@Document(value = "Claims")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RecoverPasswordData {
+public class Claim {
     @Id
     @NotNull
+    private String productID;
+
+    @NotNull
     @NotBlank
-    private String userName;
+    private String type;
+
+    @NotNull
+    @NotBlank
+    private String textContent;
 }

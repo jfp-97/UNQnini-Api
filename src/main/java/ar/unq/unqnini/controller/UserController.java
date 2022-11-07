@@ -1,6 +1,6 @@
 package ar.unq.unqnini.controller;
 import ar.unq.unqnini.model.LoginData;
-import ar.unq.unqnini.model.RecoverPasswordData;
+import ar.unq.unqnini.model.Username;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,11 @@ public class UserController {
 
     @PostMapping("/login/recover")
     @ResponseBody
-    public ResponseEntity<String> recoverPassword(@Validated @RequestBody RecoverPasswordData recoverPasswordData) throws JSONException { return userService.recoverPassword(recoverPasswordData); }
+    public ResponseEntity<String> recoverPassword(@Validated @RequestBody Username recoverPasswordData) throws JSONException { return userService.recoverPassword(recoverPasswordData); }
+
+    @PostMapping("/user/register")
+    @ResponseBody
+    public ResponseEntity<String> addUser(@Validated @RequestBody UserData user) throws JSONException { return userService.addUser(user); }
 
     @GetMapping("/user/{username}")
     public ResponseEntity<String> getUser(@PathVariable String username) throws JSONException { return userService.getUser(username); }

@@ -1,6 +1,5 @@
 package ar.unq.unqnini.service;
-import ar.unq.unqnini.model.DataOfOrder;
-import ar.unq.unqnini.model.RecoverPasswordData;
+import ar.unq.unqnini.model.Username;
 import ar.unq.unqnini.model.LoginData;
 import ar.unq.unqnini.model.UserData;
 import ar.unq.unqnini.repository.LoginRepository;
@@ -24,6 +23,7 @@ public class UserService {
 
     @Autowired
     UserRepository userRepository;
+
     JSONObject jsonResult;
     HttpStatus httpStatus;
 
@@ -46,8 +46,8 @@ public class UserService {
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);
     }
 
-    public ResponseEntity<String> recoverPassword(RecoverPasswordData recoverPasswordData) throws JSONException {
-        Optional<LoginData> loginData = loginRepository.findById(recoverPasswordData.getUserName());
+    public ResponseEntity<String> recoverPassword(Username recoverPasswordData) throws JSONException {
+        Optional<LoginData> loginData = loginRepository.findById(recoverPasswordData.getUsername());
 
         if(loginData.isEmpty()) {
             jsonResult = new JSONObject().put("error", "Bad Request");
@@ -56,6 +56,26 @@ public class UserService {
             jsonResult = new JSONObject().put("password", loginData.get().getPassword());
             httpStatus = HttpStatus.OK;
         }
+        return new ResponseEntity<>(jsonResult.toString(), httpStatus);
+    }
+
+    public ResponseEntity<String> addUser(UserData userData) throws JSONException{
+        List<JSONObject> errors = new ArrayList<>();
+        LoginData loginData = new LoginData(userData.getUsername(), userData.getPassword());
+
+
+        if(userRepository.findById(userData.getUsername()).isPresent()) {
+            jsonResult = new JSONObject().put("error", "Bad Request");
+            errors.add(createErrorBody("username", "ya existe en el sistema"));
+            jsonResult.put("errors", new JSONArray(errors));
+            httpStatus = HttpStatus.BAD_REQUEST;
+        } else {
+            loginRepository.save(loginData);
+            jsonResult = new JSONObject().put("userRegistered", "true");
+            httpStatus = HttpStatus.OK;
+            userRepository.save(userData);
+        }
+
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);
     }
 
@@ -72,6 +92,7 @@ public class UserService {
             jsonResult.put("cuit", userData.get().getCuit().toString());
             jsonResult.put("businessName", userData.get().getBusinessName());
             jsonResult.put("businessAddress", userData.get().getBusinessAddress());
+            jsonResult.put("pictureUrl", userData.get().getPictureUrl());
             httpStatus = HttpStatus.OK;
         }
         return new ResponseEntity<>(jsonResult.toString(), httpStatus);

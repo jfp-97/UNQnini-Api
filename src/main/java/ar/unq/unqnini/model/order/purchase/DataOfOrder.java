@@ -1,4 +1,5 @@
-package ar.unq.unqnini.model;
+package ar.unq.unqnini.model.order.purchase;
+import ar.unq.unqnini.model.order.purchase.PurchaseData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,5 +17,4 @@ public class DataOfOrder {
     @Id
     private String id;
     private List<PurchaseData> purchaseData;
-    private int discount;
 }

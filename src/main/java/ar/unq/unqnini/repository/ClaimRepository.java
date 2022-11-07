@@ -1,11 +1,11 @@
 package ar.unq.unqnini.repository;
-import ar.unq.unqnini.model.UserData;
+import ar.unq.unqnini.model.Claim;
+import ar.unq.unqnini.model.Coupon;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface UserRepository extends MongoRepository<UserData, String> {
-    Optional<UserData> findById(String username);
-
+public interface ClaimRepository extends MongoRepository<Claim, String> {
+    Optional<Claim> findById(String id);
 }
